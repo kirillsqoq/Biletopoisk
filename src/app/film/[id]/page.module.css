@@ -1,0 +1,65 @@
+.main {
+	display: flex;
+	flex-direction: column;
+	align-items: flex-start;
+	gap: 24px;
+	/* border: 1px solid var(--gray-1, #333); */
+	background: #f5f5f5;
+}
+
+.film_data_item {
+	display: flex;
+	align-items: flex-start;
+	gap: 8px;
+}
+.film_data_item :nth-child(1) {
+	color: var(--text-primary, #1b1f23);
+	font-size: 20px;
+	font-family: Roboto;
+	font-weight: 600;
+	line-height: 24px;
+}
+
+.film_card_image {
+	width: 400px;
+	height: 500px;
+	flex-shrink: 0;
+	border-radius: 8px;
+	background: lightgray 50% / cover no-repeat;
+}
+
+.film_card {
+	display: flex;
+	width: 1856px;
+	height: 553px;
+	padding: 24px;
+	align-items: flex-start;
+	gap: 32px;
+	border-radius: 8px;
+	background: #fff;
+}
+
+.comment {
+	display: flex;
+	padding: 24px;
+	align-items: flex-start;
+	gap: 32px;
+	flex: 1 0 0;
+	border-radius: 8px;
+	background: #fff;
+}
+
+.comment_header {
+	display: flex;
+	justify-content: space-between;
+	align-items: flex-start;
+	align-self: stretch;
+}
+
+.comment_body {
+	display: flex;
+	flex-direction: column;
+	align-items: flex-start;
+	gap: 16px;
+	align-self: stretch;
+}
