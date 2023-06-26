@@ -4,7 +4,7 @@ import { selectProductAmount } from "@/redux/features/cart/selector";
 import { cartActions } from "@/redux/features/cart";
 import { useDispatch, useSelector } from "react-redux";
 
-export const TicketButtonsPanel = ({ id }) => {
+export const TicketButtonsPanel = ({ id, cartVariant }) => {
 	const dispatch = useDispatch();
 	const filmTicketsAmount = useSelector((state) =>
 		selectProductAmount(state, id)
@@ -31,7 +31,7 @@ export const TicketButtonsPanel = ({ id }) => {
 				}>
 				-
 			</button>
-			{filmTicketsAmount > 0 && (
+			{cartVariant && filmTicketsAmount > 0 && (
 				<button
 					onClick={() => dispatch(cartActions.reset(id))}
 					className={styles.film_card_order_button_close}>

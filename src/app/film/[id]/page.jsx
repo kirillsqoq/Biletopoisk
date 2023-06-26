@@ -2,6 +2,7 @@
 import Image from "next/image";
 import styles from "../[id]/page.module.css";
 import { usePathname } from "next/navigation";
+
 import {
 	useGetMovieQuery,
 	useGetMoviesQuery,
@@ -58,7 +59,7 @@ function FilmPage({ film }) {
 					<div style={{ display: "flex", alignItems: "flex-end" }}>
 						<h2>{film.title}</h2>
 						<div style={{ flexGrow: 1 }}></div>
-						<TicketButtonsPanel id={film.id} />
+						<TicketButtonsPanel cartVariant={false} id={film.id} />
 					</div>
 					<div className={styles.film_data}>
 						<div className={styles.film_data_item}>

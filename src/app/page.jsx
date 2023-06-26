@@ -92,7 +92,7 @@ function FilmCard({ id, title, posterUrl, genre, cartMode }) {
 						</text>
 					</div>
 					<div className={styles.film_card_order}>
-						<TicketButtonsPanel id={id} />
+						<TicketButtonsPanel id={id} cartVariant={cartMode} />
 					</div>
 				</div>
 			</div>
