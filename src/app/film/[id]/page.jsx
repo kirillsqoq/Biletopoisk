@@ -10,6 +10,7 @@ import {
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { i18n } from "@/utils/i18n";
+import { TicketButtonsPanel } from "@/components/TicketsButtonsPanel";
 // import { useEffect } from "react";
 
 export default function Home() {
@@ -54,7 +55,11 @@ function FilmPage({ film }) {
 					alt='Picture of the author'
 				/>
 				<div className={styles.film_info}>
-					<h2>{film.title}</h2>
+					<div style={{ display: "flex", alignItems: "flex-end" }}>
+						<h2>{film.title}</h2>
+						<div style={{ flexGrow: 1 }}></div>
+						<TicketButtonsPanel id={film.id} />
+					</div>
 					<div className={styles.film_data}>
 						<div className={styles.film_data_item}>
 							<text>Жанр:</text>

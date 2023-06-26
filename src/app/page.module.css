@@ -88,6 +88,27 @@
 	background: var(--orange, #f50);
 	border: none;
 }
+.film_card_order_button_disabled[disabled] {
+	color: #fff;
+	display: flex;
+	padding: 4px;
+	align-items: center;
+	gap: 10px;
+	border-radius: 4px;
+	/* background: var(--orange, #f50); */
+	border: none;
+}
+.film_card_order_button_close {
+	cursor: pointer;
+	color: #fff;
+	display: flex;
+	padding: 4px;
+	align-items: center;
+	gap: 10px;
+	border-radius: 4px;
+	background: var(--orange, rgb(255, 255, 255));
+	border: none;
+}
 
 .films_list {
 	width: 100vw;

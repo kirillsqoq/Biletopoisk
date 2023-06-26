@@ -10,8 +10,10 @@ const cartSlice = createSlice({
 	reducers: {
 		increment: (state, { payload }) => {
 			const count = state[payload] || 0;
-			state.total = state.total + 1;
-			state[payload] = count + 1;
+			if (count < 30) {
+				state.total = state.total + 1;
+				state[payload] = count + 1;
+			}
 		},
 		decrement: (state, { payload }) => {
 			const count = state[payload];
@@ -29,7 +31,10 @@ const cartSlice = createSlice({
 			state.total = state.total - 1;
 			state[payload] = count - 1;
 		},
-		reset: () => initialState,
+		reset: (state, { payload }) => {
+			state.total = state.total - state[payload];
+			state[payload] = 0;
+		},
 	},
 });
 
