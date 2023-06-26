@@ -3,9 +3,9 @@ export function i18n(world) {
 		case "fantasy":
 			return "Фэнтези";
 		case "horror":
-			return "Хоррор";
+			return "Ужасы";
 		case "action":
-			return "Экшен";
+			return "Боевик";
 		case "comedy":
 			return "Комедия";
 		default:

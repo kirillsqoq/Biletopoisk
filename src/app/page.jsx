@@ -3,7 +3,11 @@ import Image from "next/image";
 import styles from "./page.module.css";
 import Link from "next/link";
 
-import { selectProductAmount } from "@/redux/features/cart/selector";
+import {
+	selectGenre,
+	selectProductAmount,
+	selectSearchStr,
+} from "@/redux/features/cart/selector";
 
 import { cartActions } from "@/redux/features/cart";
 
@@ -30,6 +34,13 @@ import { TicketButtonsPanel } from "@/components/TicketsButtonsPanel";
 export const Films = ({ cartMode }) => {
 	const { data, isLoading, error } = useGetMoviesQuery();
 	const [currentFilmId, setCurrentFilmId] = useState();
+	const searchStr = useSelector((state) => selectSearchStr(state));
+	const selectedGenre = useSelector((state) => selectGenre(state));
+
+	useEffect(() => {
+		console.log(selectedGenre);
+	}, [selectedGenre]);
+
 	if (isLoading) {
 		return <span>Loading...</span>;
 	}
@@ -40,16 +51,34 @@ export const Films = ({ cartMode }) => {
 
 	return (
 		<div className={styles.films_list}>
-			{data.map(({ id, title, posterUrl, genre }) => (
-				<FilmCard
-					cartMode={cartMode}
-					key={id}
-					id={id}
-					title={title}
-					posterUrl={posterUrl}
-					genre={genre}
-				/>
-			))}
+			{data.map(
+				({ id, title, posterUrl, genre }) =>
+					title.toLowerCase().includes(searchStr.toLowerCase()) && (
+						<>
+							{selectedGenre !== "Не выбран" ? (
+								i18n(genre) === selectedGenre && (
+									<FilmCard
+										cartMode={cartMode}
+										key={id}
+										id={id}
+										title={title}
+										posterUrl={posterUrl}
+										genre={genre}
+									/>
+								)
+							) : (
+								<FilmCard
+									cartMode={cartMode}
+									key={id}
+									id={id}
+									title={title}
+									posterUrl={posterUrl}
+									genre={genre}
+								/>
+							)}
+						</>
+					)
+			)}
 			{/* {currentFilmId && <Film filmId={currentFilmId} />} */}
 		</div>
 	);
@@ -108,57 +137,48 @@ function FilmCard({ id, title, posterUrl, genre, cartMode }) {
 }
 
 function SerachFilter() {
-	const [dropdownGengre, setDropdownGengre] = useState({
-		dropdown: [
-			{
-				id: 1,
-				label: "English",
-			},
-			{
-				id: 2,
-				label: "Mandarian",
-			},
-			{
-				id: 3,
-				label: "Russian",
-			},
-			{
-				id: 4,
-				label: "Arabic",
-			},
-			{
-				id: 5,
-				label: "Urdu",
-			},
-		],
-		selected: [1, 5],
-		defaultText: "No Prefrences",
-	});
+	const dispatch = useDispatch();
+
 	return (
 		<div className={styles.search_filter}>
 			<h3>Фильтр поиска</h3>
 			<div className={styles.filters}>
 				<div className={styles.filter_item}>
 					<label>Название</label>
+
 					<input
+						onChange={(e) =>
+							dispatch(cartActions.setSearch(e.target.value))
+						}
 						placeholder='Введите название'
 						className={styles.input}
-						type='text'
+						type='search'
 						name='name'
 					/>
 				</div>
 				<div className={styles.filter_item}>
 					<label>Жанр</label>
-					<select>
-						<option value='someOption'>Some option</option>
-						<option value='otherOption'>Other option</option>
+
+					<select
+						placeholder='Выберите жанр'
+						onChange={(e) =>
+							dispatch(cartActions.setGenre(e.target.value))
+						}
+						className={styles.input}>
+						<option value='Не выбран'>Не выбран</option>
+						<option value='Боевик'>Боевик</option>
+						<option value='Комедия'>Комедия</option>
+						<option value='Фэнтези'>Фэнтези</option>
+						<option value='Ужасы'>Ужасы</option>
 					</select>
 				</div>
 				<div className={styles.filter_item}>
 					<label>Кинотеатр</label>
-					<select>
-						<option value='someOption'>Some option</option>
-						<option value='otherOption'>Other option</option>
+
+					<select
+						placeholder='Выберите кинотеатр'
+						className={styles.input}>
+						<option value='Выберите кинотеатр'>Не выбран</option>
 					</select>
 				</div>
 			</div>

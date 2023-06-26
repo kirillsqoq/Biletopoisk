@@ -2,6 +2,8 @@ import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
 	total: 0,
+	searchstr: "",
+	genre: "Не выбран",
 };
 
 const cartSlice = createSlice({
@@ -34,6 +36,16 @@ const cartSlice = createSlice({
 		reset: (state, { payload }) => {
 			state.total = state.total - state[payload];
 			state[payload] = 0;
+		},
+		setSearch: (state, { payload }) => {
+			state.searchstr = payload;
+		},
+		searchReset: (state) => {
+			state.searchstr = "";
+			state.genre = "Не выбран";
+		},
+		setGenre: (state, { payload }) => {
+			state.genre = payload;
 		},
 	},
 });

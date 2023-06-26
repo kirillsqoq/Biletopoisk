@@ -6,9 +6,14 @@ import {
 	selectProductAmount,
 	selectTotalTickets,
 } from "@/redux/features/cart/selector";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
+import { cartActions } from "@/redux/features/cart";
 
 export default function Home() {
+	const dispatch = useDispatch();
+	useEffect(() => {
+		dispatch(cartActions.searchReset());
+	}, []);
 	return (
 		<main>
 			<div className={styles.cart_main}>
