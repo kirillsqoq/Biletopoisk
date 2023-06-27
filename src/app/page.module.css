@@ -80,6 +80,11 @@
 	gap: 8px;
 }
 .film_card_order_button {
+	font-weight: 600;
+	padding-right: 5px;
+
+	padding-left: 5px;
+	cursor: pointer;
 	color: #fff;
 	display: flex;
 	padding: 4px;
@@ -89,8 +94,15 @@
 	background: var(--orange, #f50);
 	border: none;
 }
-.film_card_order_button_disabled[disabled] {
-	color: #fff;
+.film_card_order_button_disabled {
+	color: #ffffff;
+
+	padding-right: 5px;
+
+	padding-left: 5px;
+	font-family: Roboto;
+	font-weight: 600;
+
 	display: flex;
 	padding: 4px;
 	align-items: center;
@@ -98,6 +110,8 @@
 	border-radius: 4px;
 	/* background: var(--orange, #f50); */
 	border: none;
+	border-radius: 4px;
+	background: var(--orange-disabled, #ffa375);
 }
 .film_card_order_button_close {
 	cursor: pointer;
@@ -321,7 +335,7 @@
 	position: absolute;
 	width: 250px;
 	top: 40vh;
-	left: calc(50% - 125px);
+	left: calc(50% - 200px);
 }
 
 .modal_header :nth-child(1) {
