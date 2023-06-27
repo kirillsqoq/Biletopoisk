@@ -63,3 +63,15 @@
 	gap: 16px;
 	align-self: stretch;
 }
+
+.comment_userpic {
+	display: flex;
+	width: 100px;
+	height: 100px;
+	padding: 10px;
+	justify-content: center;
+	align-items: center;
+	gap: 10px;
+	border-radius: 8px;
+	background: var(--gray-5, #e0e0e0);
+}

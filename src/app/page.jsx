@@ -213,6 +213,9 @@ const FilmsByCinemaServerFilter = ({
 	useEffect(() => {
 		console.log(data, cartMode, searchStr, selectedGenre);
 	}, [data]);
+	if (isLoading) {
+		return <span>Loading...</span>;
+	}
 
 	return (
 		data &&

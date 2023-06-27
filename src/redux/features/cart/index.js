@@ -44,6 +44,7 @@ const cartSlice = createSlice({
 		searchReset: (state) => {
 			state.searchstr = "";
 			state.genre = "Не выбран";
+			state.cinema = "Не выбран";
 		},
 		setGenre: (state, { payload }) => {
 			state.genre = payload;

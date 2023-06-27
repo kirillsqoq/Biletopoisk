@@ -3,12 +3,15 @@ import styles from "../app/page.module.css";
 import { selectProductAmount } from "@/redux/features/cart/selector";
 import { cartActions } from "@/redux/features/cart";
 import { useDispatch, useSelector } from "react-redux";
-
+import { useState } from "react";
+import { createPortal } from "react-dom";
 export const TicketButtonsPanel = ({ id, cartVariant }) => {
 	const dispatch = useDispatch();
 	const filmTicketsAmount = useSelector((state) =>
 		selectProductAmount(state, id)
 	);
+	const [showModal, setShowModal] = useState(false);
+
 	return (
 		<>
 			<button
@@ -23,7 +26,13 @@ export const TicketButtonsPanel = ({ id, cartVariant }) => {
 			<text>{filmTicketsAmount}</text>
 
 			<button
-				onClick={() => dispatch(cartActions.decrement(id))}
+				onClick={
+					cartVariant
+						? filmTicketsAmount !== 1
+							? () => dispatch(cartActions.decrement(id))
+							: () => setShowModal(true)
+						: () => dispatch(cartActions.decrement(id))
+				}
 				className={
 					filmTicketsAmount == 0
 						? styles.film_card_order_button_disabled
@@ -33,11 +42,23 @@ export const TicketButtonsPanel = ({ id, cartVariant }) => {
 			</button>
 			{cartVariant && filmTicketsAmount > 0 && (
 				<button
-					onClick={() => dispatch(cartActions.reset(id))}
+					onClick={() => setShowModal(true)}
 					className={styles.film_card_order_button_close}>
 					<CloseIcon />
 				</button>
 			)}
+			{showModal &&
+				cartVariant &&
+				createPortal(
+					<ModalContent
+						onCancel={() => setShowModal(false)}
+						onDelete={() => [
+							setShowModal(false),
+							dispatch(cartActions.reset(id)),
+						]}
+					/>,
+					document.body
+				)}
 		</>
 	);
 };
@@ -69,3 +90,28 @@ const CloseIcon = (props) => (
 		/>
 	</svg>
 );
+
+function ModalContent({ onDelete, onCancel }) {
+	return (
+		<>
+			<div className={styles.modal}>
+				<div className={styles.modal_header}>
+					<div>Удаление билета</div>
+					<div style={{ flexGrow: "1" }}></div>
+					<button
+						onClick={onCancel}
+						className={styles.film_card_order_button_close}>
+						<CloseIcon />
+					</button>
+				</div>
+				<div>Вы уверены, что хотите удалить билет?</div>
+				<div
+					className={styles.modal_buttons}
+					style={{ display: "flex", flexFlow: "row", gap: "8px" }}>
+					<button onClick={onDelete}>Да</button>
+					<button onClick={onCancel}>Нет</button>
+				</div>
+			</div>
+		</>
+	);
+}
