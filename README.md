@@ -7,4 +7,4 @@ node server.js
 Дефолтно запускается сервер на http://localhost:3001
 3. Запустите клиент
 npm install
-npm next dev  
+npm next dev
