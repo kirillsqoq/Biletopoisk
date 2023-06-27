@@ -5,14 +5,10 @@ import { usePathname } from "next/navigation";
 
 import {
 	useGetMovieQuery,
-	useGetMoviesQuery,
 	useGetReviewsQuery,
 } from "@/redux/services/movieApi";
-import { useEffect, useState } from "react";
-import Link from "next/link";
 import { i18n } from "@/utils/i18n";
 import { TicketButtonsPanel } from "@/components/TicketsButtonsPanel";
-// import { useEffect } from "react";
 
 export default function Home() {
 	const pathname = usePathname();

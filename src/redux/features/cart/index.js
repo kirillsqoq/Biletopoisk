@@ -4,6 +4,7 @@ const initialState = {
 	total: 0,
 	searchstr: "",
 	genre: "Не выбран",
+	cinema: "Не выбран",
 };
 
 const cartSlice = createSlice({
@@ -46,6 +47,9 @@ const cartSlice = createSlice({
 		},
 		setGenre: (state, { payload }) => {
 			state.genre = payload;
+		},
+		setCinema: (state, { payload }) => {
+			state.cinema = payload;
 		},
 	},
 });

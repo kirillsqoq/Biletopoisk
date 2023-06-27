@@ -7,46 +7,58 @@ import {
 	selectGenre,
 	selectProductAmount,
 	selectSearchStr,
+	selectCinema,
 } from "@/redux/features/cart/selector";
 
 import { cartActions } from "@/redux/features/cart";
 
-import { useGetMovieQuery, useGetMoviesQuery } from "@/redux/services/movieApi";
-import { useEffect, useState } from "react";
+import {
+	useGetMovieQuery,
+	useGetMoviesQuery,
+	useGetCinemasQuery,
+	useGetMoviesInCinemaQuery,
+} from "@/redux/services/movieApi";
+import { use, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { i18n } from "@/utils/i18n";
 import { TicketButtonsPanel } from "@/components/TicketsButtonsPanel";
 
-// const Film = ({ filmId }) => {
-// 	const { data, isLoading, error } = useGetMovieQuery(filmId);
-
-// 	if (isLoading) {
-// 		return <span>Loading...</span>;
-// 	}
-
-// 	if (!data || error) {
-// 		return <span>NotFound</span>;
-// 	}
-
-// 	return <div>{/* <FilmCard filmId={filmId} /> */}</div>;
-// };
+export default function Home() {
+	return (
+		<main className={styles.main}>
+			<SerachFilter />
+			<Films cartMode={false} />
+		</main>
+	);
+}
 
 export const Films = ({ cartMode }) => {
 	const { data, isLoading, error } = useGetMoviesQuery();
-	const [currentFilmId, setCurrentFilmId] = useState();
+
 	const searchStr = useSelector((state) => selectSearchStr(state));
 	const selectedGenre = useSelector((state) => selectGenre(state));
-
-	useEffect(() => {
-		console.log(selectedGenre);
-	}, [selectedGenre]);
+	const selectedCinema = useSelector((state) => selectCinema(state));
+	console.log(selectedCinema, selectedGenre);
 
 	if (isLoading) {
 		return <span>Loading...</span>;
 	}
 
 	if (!data || error) {
-		return <span>NotFound</span>;
+		return <span>Not Found</span>;
+	}
+
+	if (selectedCinema !== "Не выбран") {
+		return (
+			<div className={styles.films_list}>
+				<FilmsByCinemaServerFilter
+					selectedGenre={selectedGenre}
+					searchStr={searchStr}
+					cartMode={cartMode}
+					selectedCinema={selectedCinema}
+				/>
+			</div>
+		);
 	}
 
 	return (
@@ -83,15 +95,6 @@ export const Films = ({ cartMode }) => {
 		</div>
 	);
 };
-
-export default function Home() {
-	return (
-		<main className={styles.main}>
-			<SerachFilter />
-			<Films cartMode={false} />
-		</main>
-	);
-}
 
 function FilmCard({ id, title, posterUrl, genre, cartMode }) {
 	const dispatch = useDispatch();
@@ -137,6 +140,10 @@ function FilmCard({ id, title, posterUrl, genre, cartMode }) {
 }
 
 function SerachFilter() {
+	const { data, isLoading, error } = useGetCinemasQuery();
+	useEffect(() => {
+		console.log(data);
+	}, [data]);
 	const dispatch = useDispatch();
 
 	return (
@@ -176,12 +183,66 @@ function SerachFilter() {
 					<label>Кинотеатр</label>
 
 					<select
+						onChange={(e) =>
+							dispatch(cartActions.setCinema(e.target.value))
+						}
 						placeholder='Выберите кинотеатр'
 						className={styles.input}>
-						<option value='Выберите кинотеатр'>Не выбран</option>
+						<option value='Не выбран'>Не выбран</option>
+						{data &&
+							data.map(({ name, id }) => (
+								<option key={id} value={id}>
+									{name}
+								</option>
+							))}
 					</select>
 				</div>
 			</div>
 		</div>
 	);
 }
+
+const FilmsByCinemaServerFilter = ({
+	selectedCinema,
+	cartMode,
+	searchStr,
+	selectedGenre,
+}) => {
+	const { data, isLoading, error } =
+		useGetMoviesInCinemaQuery(selectedCinema);
+	useEffect(() => {
+		console.log(data, cartMode, searchStr, selectedGenre);
+	}, [data]);
+
+	return (
+		data &&
+		data.map(
+			({ id, title, posterUrl, genre }) =>
+				title.toLowerCase().includes(searchStr.toLowerCase()) && (
+					<>
+						{selectedGenre !== "Не выбран" ? (
+							i18n(genre) === selectedGenre && (
+								<FilmCard
+									cartMode={cartMode}
+									key={id}
+									id={id}
+									title={title}
+									posterUrl={posterUrl}
+									genre={genre}
+								/>
+							)
+						) : (
+							<FilmCard
+								cartMode={cartMode}
+								key={id}
+								id={id}
+								title={title}
+								posterUrl={posterUrl}
+								genre={genre}
+							/>
+						)}
+					</>
+				)
+		)
+	);
+};

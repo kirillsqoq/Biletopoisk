@@ -11,8 +11,19 @@ export const movieApi = createApi({
 		getReviews: builder.query({
 			query: (movieId) => `reviews?movieId=${movieId}`,
 		}),
+		getCinemas: builder.query({
+			query: () => `cinemas`,
+		}),
+		getMoviesInCinema: builder.query({
+			query: (cinemaId) => `movies?cinemaId=${cinemaId}`,
+		}),
 	}),
 });
 
-export const { useGetMoviesQuery, useGetMovieQuery, useGetReviewsQuery } =
-	movieApi;
+export const {
+	useGetMoviesQuery,
+	useGetMovieQuery,
+	useGetReviewsQuery,
+	useGetCinemasQuery,
+	useGetMoviesInCinemaQuery,
+} = movieApi;

@@ -8,3 +8,4 @@ export const selectTotalTickets = (state) => selectCartModule(state).total;
 export const selectSearchStr = (state) => selectCartModule(state).searchstr;
 
 export const selectGenre = (state) => selectCartModule(state).genre;
+export const selectCinema = (state) => selectCartModule(state).cinema;
